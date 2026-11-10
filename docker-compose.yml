@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: bookflow
+      POSTGRES_USER: bookflow
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD}
+    volumes: [bookflow_db:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bookflow -d bookflow"]
+      interval: 10s
+      retries: 5
+  redis:
+    image: redis:7-alpine
+    volumes: [bookflow_redis:/data]
+  api:
+    build: ./backend
+    environment:
+      ConnectionStrings__Db: Host=db;Database=bookflow;Username=bookflow;Password=${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      DEMO_MODE: ${DEMO_MODE:-false}
+      DEMO_EMAIL: ${DEMO_EMAIL:-}
+      DEMO_PASSWORD: ${DEMO_PASSWORD:-}
+      WEB_ORIGIN: ${WEB_ORIGIN:-http://localhost:3000}
+    depends_on: {db: {condition: service_healthy}}
+  web:
+    build: ./frontend
+    environment:
+      INTERNAL_API_URL: http://api:8080
+    ports: ["${WEB_PORT:-3000}:3000"]
+    depends_on: [api]
+volumes:
+  bookflow_db:
+  bookflow_redis:
