@@ -21,15 +21,3 @@ ASP.NET Core 10, EF Core, PostgreSQL, Next.js 15, React 19, TypeScript, Tailwind
 ## API
 
 `POST /api/auth/register`, `/login`, `/telegram`; `GET/PUT /api/tenants/me`; `GET/POST /api/branches`, `/services`, `/employees`, `/customers`, `/appointments`, `/members`; `PUT /api/services/{id}`, `/schedules/{employee}`; `GET /api/availability?employee=&service=&date=`, `/schedules/{employee}`, `/analytics`, `/analytics/utilization`, `/export/appointments`; `POST /api/leaves`; `POST /api/appointments/{id}/reschedule`; `PATCH /api/appointments/{id}`. JWT требуется в приватных маршрутах. Списки записей и клиентов выдаются страницами по 50 элементов.
-
-## Сборка и ограничения
-
-`dotnet restore && dotnet build -c Release` в backend; `npm ci && npm run build` в frontend; `docker compose build` при наличии Docker. Сборка не является подтверждением runtime-корректности. Время слотов интерпретируется в UTC: перед применением у конкретного клиента нужно согласовать timezone организации. Для отправки реальных уведомлений требуется Bot Token. Исходники под MIT. Реальные скриншоты добавляются после законного запуска проекта: `docs/screenshots/` (изображения не подменяются макетами).
-
-## Для портфолио
-
-Демонстрация компетенций: календарное бронирование, многопользовательская CRM, Telegram Mini App, RBAC, PostgreSQL, Docker. Не выдавать за заказ настоящего клиента.
-
-## Место для настоящих скриншотов
-
-Добавьте реальные снимки приложения в `docs/screenshots/` только после запуска и получения права на их публикацию.
